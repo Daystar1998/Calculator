@@ -8,6 +8,8 @@ import java.awt.Insets;
  */
 public class GBConstraints extends GridBagConstraints {
 
+	private static final long serialVersionUID = 1L;
+
 	public GBConstraints(int gridX, int gridY) {
 
 		this(gridX, gridY, Fill.NONE);
