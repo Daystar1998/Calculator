@@ -58,10 +58,10 @@ public class Window {
 		frame.setContentPane(basePanel);
 		
 		JPanel basicInputPanel = createBasicInputPanel();
-		inputPanel.add(basicInputPanel, new GBConstraints(0, 0, Fill.BOTH));
+		inputPanel.add(basicInputPanel, new GBConstraints(0, 0).fill(Fill.BOTH));
 		
 		JPanel specialInputPanel = createSpecialInputPanel();
-		inputPanel.add(specialInputPanel, new GBConstraints(1, 0, Fill.BOTH));
+		inputPanel.add(specialInputPanel, new GBConstraints(1, 0).fill(Fill.BOTH));
 	}
 	
 	private JPanel createBasePanel() {
@@ -72,21 +72,21 @@ public class Window {
 		// Display panel
 		
 		JPanel displayPanel = new JPanel(new GridBagLayout());
-		basePanel.add(displayPanel, new GBConstraints(0, 0, 6, 2, Fill.BOTH));
+		basePanel.add(displayPanel, new GBConstraints(0, 0).size(6, 2).fill(Fill.BOTH));
 		
 		inputTextField = new JTextField();
 		inputTextField.setHorizontalAlignment(SwingConstants.RIGHT);
-		displayPanel.add(inputTextField, new GBConstraints(0, 0, Fill.BOTH));
+		displayPanel.add(inputTextField, new GBConstraints(0, 0).fill(Fill.BOTH));
 		
 		resultTextField = new JTextField();
 		resultTextField.setHorizontalAlignment(SwingConstants.RIGHT);
 		resultTextField.setEditable(false);
-		displayPanel.add(resultTextField, new GBConstraints(0, 1, Fill.BOTH));
+		displayPanel.add(resultTextField, new GBConstraints(0, 1).fill(Fill.BOTH));
 		
 		// Input panel
 		
 		inputPanel = new JPanel(new GridBagLayout());
-		basePanel.add(inputPanel, new GBConstraints(0, 2, 1, 5, Fill.BOTH));
+		basePanel.add(inputPanel, new GBConstraints(0, 2).size(1, 5).fill(Fill.BOTH));
 		
 		return basePanel;
 	}
@@ -98,63 +98,63 @@ public class Window {
 		// Row 0
 		
 		JButton buttonPercent = new JButton("%");
-		basicInputPanel.add(buttonPercent, new GBConstraints(0, 0, Fill.BOTH));
+		basicInputPanel.add(buttonPercent, new GBConstraints(0, 0).fill(Fill.BOTH));
 		
 		JButton buttonDivision = new JButton("÷");
-		basicInputPanel.add(buttonDivision, new GBConstraints(1, 0, Fill.BOTH));
+		basicInputPanel.add(buttonDivision, new GBConstraints(1, 0).fill(Fill.BOTH));
 		
 		JButton buttonMultiplication = new JButton("×");
-		basicInputPanel.add(buttonMultiplication, new GBConstraints(2, 0, Fill.BOTH));
+		basicInputPanel.add(buttonMultiplication, new GBConstraints(2, 0).fill(Fill.BOTH));
 		
 		JButton buttonSubtraction = new JButton("-");
-		basicInputPanel.add(buttonSubtraction, new GBConstraints(3, 0, Fill.BOTH));
+		basicInputPanel.add(buttonSubtraction, new GBConstraints(3, 0).fill(Fill.BOTH));
 		
 		// Row 1
 		
 		JButton buttonSeven = new JButton("7");
-		basicInputPanel.add(buttonSeven, new GBConstraints(0, 1, Fill.BOTH));
+		basicInputPanel.add(buttonSeven, new GBConstraints(0, 1).fill(Fill.BOTH));
 		
 		JButton buttonEight = new JButton("8");
-		basicInputPanel.add(buttonEight, new GBConstraints(1, 1, Fill.BOTH));
+		basicInputPanel.add(buttonEight, new GBConstraints(1, 1).fill(Fill.BOTH));
 		
 		JButton buttonNine = new JButton("9");
-		basicInputPanel.add(buttonNine, new GBConstraints(2, 1, Fill.BOTH));
+		basicInputPanel.add(buttonNine, new GBConstraints(2, 1).fill(Fill.BOTH));
 		
 		JButton buttonAddition = new JButton("+");
-		basicInputPanel.add(buttonAddition, new GBConstraints(3, 1, 1, 2, Fill.BOTH));
+		basicInputPanel.add(buttonAddition, new GBConstraints(3, 1).size(1, 2).fill(Fill.BOTH));
 		
 		// Row 2
 		
 		JButton buttonFour = new JButton("4");
-		basicInputPanel.add(buttonFour, new GBConstraints(0, 2, Fill.BOTH));
+		basicInputPanel.add(buttonFour, new GBConstraints(0, 2).fill(Fill.BOTH));
 		
 		JButton buttonFive = new JButton("5");
-		basicInputPanel.add(buttonFive, new GBConstraints(1, 2, Fill.BOTH));
+		basicInputPanel.add(buttonFive, new GBConstraints(1, 2).fill(Fill.BOTH));
 		
 		JButton buttonSix = new JButton("6");
-		basicInputPanel.add(buttonSix, new GBConstraints(2, 2, Fill.BOTH));
+		basicInputPanel.add(buttonSix, new GBConstraints(2, 2).fill(Fill.BOTH));
 
 		// Row 3
 		
 		JButton buttonOne = new JButton("1");
-		basicInputPanel.add(buttonOne, new GBConstraints(0, 3, Fill.BOTH));
+		basicInputPanel.add(buttonOne, new GBConstraints(0, 3).fill(Fill.BOTH));
 		
 		JButton buttonTwo = new JButton("2");
-		basicInputPanel.add(buttonTwo, new GBConstraints(1, 3, Fill.BOTH));
+		basicInputPanel.add(buttonTwo, new GBConstraints(1, 3).fill(Fill.BOTH));
 		
 		JButton buttonThree = new JButton("3");
-		basicInputPanel.add(buttonThree, new GBConstraints(2, 3, Fill.BOTH));
+		basicInputPanel.add(buttonThree, new GBConstraints(2, 3).fill(Fill.BOTH));
 		
 		JButton buttonEqual = new JButton("=");
-		basicInputPanel.add(buttonEqual, new GBConstraints(3, 3, 1, 2, Fill.BOTH));
+		basicInputPanel.add(buttonEqual, new GBConstraints(3, 3).size(1, 2).fill(Fill.BOTH));
 		
 		// Row 4
 		
 		JButton buttonZero = new JButton("0");
-		basicInputPanel.add(buttonZero, new GBConstraints(0, 4, 2, 1, Fill.BOTH));
+		basicInputPanel.add(buttonZero, new GBConstraints(0, 4).size(2, 1).fill(Fill.BOTH));
 		
 		JButton buttonDecimal = new JButton(".");
-		basicInputPanel.add(buttonDecimal, new GBConstraints(2, 4, Fill.BOTH));
+		basicInputPanel.add(buttonDecimal, new GBConstraints(2, 4).fill(Fill.BOTH));
 		
 		return basicInputPanel;
 	}
@@ -166,19 +166,19 @@ public class Window {
 		// TODO Row zero shift button
 		
 		JButton buttonClear = new JButton("C");
-		specialInputPanel.add(buttonClear, new GBConstraints(0, 1, Fill.BOTH));
+		specialInputPanel.add(buttonClear, new GBConstraints(0, 1).fill(Fill.BOTH));
 		
 		JButton buttonClearAll = new JButton("AC");
-		specialInputPanel.add(buttonClearAll, new GBConstraints(0, 2, Fill.BOTH));
+		specialInputPanel.add(buttonClearAll, new GBConstraints(0, 2).fill(Fill.BOTH));
 		
 		JButton buttonOpeningParenthesis = new JButton("(");
-		specialInputPanel.add(buttonOpeningParenthesis, new GBConstraints(0, 3, Fill.BOTH));
+		specialInputPanel.add(buttonOpeningParenthesis, new GBConstraints(0, 3).fill(Fill.BOTH));
 		
 		JButton buttonClosingParenthesis = new JButton(")");
-		specialInputPanel.add(buttonClosingParenthesis, new GBConstraints(0, 4, Fill.BOTH));
+		specialInputPanel.add(buttonClosingParenthesis, new GBConstraints(0, 4).fill(Fill.BOTH));
 		
 		JButton buttonChangeSign = new JButton("+/-");
-		specialInputPanel.add(buttonChangeSign, new GBConstraints(0, 5, Fill.BOTH));
+		specialInputPanel.add(buttonChangeSign, new GBConstraints(0, 5).fill(Fill.BOTH));
 		
 		return specialInputPanel;
 	}

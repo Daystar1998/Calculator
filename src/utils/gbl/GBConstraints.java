@@ -12,33 +12,15 @@ public class GBConstraints extends GridBagConstraints {
 
 	public GBConstraints(int gridX, int gridY) {
 
-		this(gridX, gridY, Fill.NONE);
-	}
-
-	public GBConstraints(int gridX, int gridY, Fill fill) {
-
-		this(gridX, gridY, 1, 1, fill);
-	}
-
-	public GBConstraints(int gridX, int gridY, int gridWidth, int gridHeight) {
-
-		this(gridX, gridY, gridWidth, gridHeight, Fill.NONE);
-	}
-
-	public GBConstraints(int gridX, int gridY, int gridWidth, int gridHeight, Fill fill) {
-
 		super();
 
 		this.gridx = gridX;
 		this.gridy = gridY;
-		this.gridwidth = gridWidth;
-		this.gridheight = gridHeight;
-		this.setFill(fill);
 
 		this.insets = new Insets(1, 2, 1, 2);
 	}
 
-	public GBConstraints setSize(int gridWidth, int gridHeight) {
+	public GBConstraints size(int gridWidth, int gridHeight) {
 
 		this.gridwidth = gridWidth;
 		this.gridheight = gridHeight;
@@ -46,21 +28,21 @@ public class GBConstraints extends GridBagConstraints {
 		return this;
 	}
 
-	public GBConstraints setWidth(int gridWidth) {
+	public GBConstraints width(int gridWidth) {
 
 		this.gridwidth = gridWidth;
 
 		return this;
 	}
 
-	public GBConstraints setHeight(int gridHeight) {
+	public GBConstraints height(int gridHeight) {
 
 		this.gridheight = gridHeight;
 
 		return this;
 	}
 
-	public GBConstraints setWeight(int weightX, int weightY) {
+	public GBConstraints weight(int weightX, int weightY) {
 
 		this.weightx = weightX;
 		this.weighty = weightY;
@@ -68,42 +50,42 @@ public class GBConstraints extends GridBagConstraints {
 		return this;
 	}
 
-	public GBConstraints setWeightX(int weightX) {
+	public GBConstraints weightX(int weightX) {
 
 		this.weightx = weightX;
 
 		return this;
 	}
 
-	public GBConstraints setWeightY(int weightY) {
+	public GBConstraints weightY(int weightY) {
 
 		this.weighty = weightY;
 
 		return this;
 	}
 
-	public GBConstraints setInsets(int length) {
+	public GBConstraints insets(int length) {
 
 		this.insets = new Insets(length, length, length, length);
 
 		return this;
 	}
 
-	public GBConstraints setInsets(int top, int left, int bottom, int right) {
+	public GBConstraints insets(int top, int left, int bottom, int right) {
 
 		this.insets = new Insets(top, left, bottom, right);
 
 		return this;
 	}
 
-	public GBConstraints setAnchor(Anchor anchor) {
+	public GBConstraints anchor(Anchor anchor) {
 
 		this.anchor = anchor.getConstraint();
 
 		return this;
 	}
 
-	public GBConstraints setFill(Fill fill) {
+	public GBConstraints fill(Fill fill) {
 
 		this.fill = fill.getConstraint();
 
