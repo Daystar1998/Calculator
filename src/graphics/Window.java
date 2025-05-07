@@ -104,6 +104,7 @@ public class Window {
 		// Row 0
 
 		JButton buttonPercent = new JButton("%");
+		buttonPercent.setToolTipText("Percent");
 		buttonPercent.addActionListener(e -> {
 
 			inputTextField.setText(inputTextField.getText() + "%");
@@ -111,6 +112,7 @@ public class Window {
 		basicInputPanel.add(buttonPercent, new GBConstraints(0, 0).fill(Fill.BOTH));
 
 		JButton buttonDivision = new JButton("÷");
+		buttonDivision.setToolTipText("Division");
 		buttonDivision.addActionListener(e -> {
 
 			inputTextField.setText(inputTextField.getText() + "÷");
@@ -118,6 +120,7 @@ public class Window {
 		basicInputPanel.add(buttonDivision, new GBConstraints(1, 0).fill(Fill.BOTH));
 
 		JButton buttonMultiplication = new JButton("×");
+		buttonMultiplication.setToolTipText("Multiplication");
 		buttonMultiplication.addActionListener(e -> {
 
 			inputTextField.setText(inputTextField.getText() + "×");
@@ -125,6 +128,7 @@ public class Window {
 		basicInputPanel.add(buttonMultiplication, new GBConstraints(2, 0).fill(Fill.BOTH));
 
 		JButton buttonSubtraction = new JButton("-");
+		buttonSubtraction.setToolTipText("Minus");
 		buttonSubtraction.addActionListener(e -> {
 
 			inputTextField.setText(inputTextField.getText() + "-");
@@ -155,6 +159,7 @@ public class Window {
 		basicInputPanel.add(buttonNine, new GBConstraints(2, 1).fill(Fill.BOTH));
 
 		JButton buttonAddition = new JButton("+");
+		buttonAddition.setToolTipText("Plus");
 		buttonAddition.addActionListener(e -> {
 
 			inputTextField.setText(inputTextField.getText() + "+");
@@ -208,6 +213,7 @@ public class Window {
 		basicInputPanel.add(buttonThree, new GBConstraints(2, 3).fill(Fill.BOTH));
 
 		JButton buttonEqual = new JButton("=");
+		buttonEqual.setToolTipText("Result");
 		buttonEqual.addActionListener(e -> {
 
 			// TODO Solve equation and display result
@@ -225,6 +231,7 @@ public class Window {
 		basicInputPanel.add(buttonZero, new GBConstraints(0, 4).size(2, 1).fill(Fill.BOTH));
 
 		JButton buttonDecimal = new JButton(".");
+		buttonDecimal.setToolTipText("Decimal point");
 		buttonDecimal.addActionListener(e -> {
 
 			inputTextField.setText(inputTextField.getText() + ".");
@@ -241,6 +248,7 @@ public class Window {
 		// TODO Row zero shift button
 
 		JButton buttonClear = new JButton("C");
+		buttonClear.setToolTipText("Clear");
 		buttonClear.addActionListener(e -> {
 
 			inputTextField.setText("");
@@ -248,6 +256,7 @@ public class Window {
 		specialInputPanel.add(buttonClear, new GBConstraints(0, 1).fill(Fill.BOTH));
 
 		JButton buttonClearAll = new JButton("AC");
+		buttonClearAll.setToolTipText("Clear all");
 		buttonClearAll.addActionListener(e -> {
 
 			inputTextField.setText("");
@@ -256,6 +265,7 @@ public class Window {
 		specialInputPanel.add(buttonClearAll, new GBConstraints(0, 2).fill(Fill.BOTH));
 
 		JButton buttonOpeningParenthesis = new JButton("(");
+		buttonOpeningParenthesis.setToolTipText("Open Parenthesis");
 		buttonOpeningParenthesis.addActionListener(e -> {
 
 			inputTextField.setText(inputTextField.getText() + "(");
@@ -263,6 +273,7 @@ public class Window {
 		specialInputPanel.add(buttonOpeningParenthesis, new GBConstraints(0, 3).fill(Fill.BOTH));
 
 		JButton buttonClosingParenthesis = new JButton(")");
+		buttonClosingParenthesis.setToolTipText("Close Parenthesis");
 		buttonClosingParenthesis.addActionListener(e -> {
 
 			inputTextField.setText(inputTextField.getText() + ")");
@@ -270,6 +281,7 @@ public class Window {
 		specialInputPanel.add(buttonClosingParenthesis, new GBConstraints(0, 4).fill(Fill.BOTH));
 
 		JButton buttonChangeSign = new JButton("+/-");
+		buttonChangeSign.setToolTipText("Change sign");
 		buttonClosingParenthesis.addActionListener(e -> {
 
 			// TODO Solve for negative of equation result
