@@ -19,7 +19,7 @@ import utils.strings.Token;
  */
 class StringTokenizerTests {
 
-	private Set<Character> operatorSet = new HashSet<Character>(Arrays.asList('^', '*', '/', '÷', '%', '+', '-'));
+	private Set<Character> operatorSet = new HashSet<Character>(Arrays.asList('^', '*', '×', '/', '÷', '%', '+', '-'));
 	private StringTokenizer stringTokenizer = new StringTokenizer();
 
 	@Test

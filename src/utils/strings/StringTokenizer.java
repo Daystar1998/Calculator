@@ -89,6 +89,7 @@ public class StringTokenizer {
 			
 			case '^':
 			case '*':
+			case '×':
 			case '/':
 			case '÷':
 			case '%':
