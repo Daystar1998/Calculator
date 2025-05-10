@@ -31,7 +31,6 @@ public class StringTokenizer {
 			if (Character.isDigit(data.charAt(i)) || data.charAt(i) == '.') {
 
 				flushFunctionBuffer();
-				expandImplicitMultiplier();
 					
 				if(data.charAt(i) == '.') {
 					
@@ -45,7 +44,6 @@ public class StringTokenizer {
 			} else if (Character.isLetter(data.charAt(i))) {
 				
 				flushNumberBuffer();
-				expandImplicitMultiplier();
 
 				functionBuffer += data.charAt(i);
 			} else if (isOperator(data.charAt(i))) {
@@ -53,18 +51,12 @@ public class StringTokenizer {
 				flushNumberBuffer();
 				flushFunctionBuffer();
 				
-				if(data.charAt(i) == '-' && (previousToken == null || previousToken.getValue() == "("))
-					numberBuffer += '-';
-				else {
-
-					previousToken = new Token(LexicalCategory.OPERATOR, Character.toString(data.charAt(i)));
-					tokens.add(previousToken);
-				}
+				previousToken = new Token(LexicalCategory.OPERATOR, Character.toString(data.charAt(i)));
+				tokens.add(previousToken);
 			} else if (data.charAt(i) == '(' || data.charAt(i) == ')') {
 				
 				flushNumberBuffer();
 				flushFunctionBuffer();
-				expandImplicitMultiplier();
 
 				previousToken = new Token(LexicalCategory.PARENTHESIS, Character.toString(data.charAt(i)));
 				tokens.add(previousToken);
@@ -102,20 +94,11 @@ public class StringTokenizer {
 		return result;
 	}
 	
-	private void expandImplicitMultiplier() {
-		
-		if(previousToken != null && (previousToken.getCategory() == LexicalCategory.NUMBER || previousToken.getValue() == ")")) {
-			
-			previousToken = new Token(LexicalCategory.OPERATOR, "*");
-			tokens.add(previousToken);
-		}
-	}
-	
 	private void flushNumberBuffer() throws Exception {
 		
 		if(numberBuffer.length() > 0) {
 			
-			if(containsDecimal && (numberBuffer.length() == 1 || (numberBuffer.length() == 2 && numberBuffer.charAt(0) == '-')))
+			if(containsDecimal && numberBuffer.length() == 1)
 				throw new Exception("Number cannot contain only a decimal point");
 
 			previousToken = new Token(LexicalCategory.NUMBER, numberBuffer);
