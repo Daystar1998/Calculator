@@ -70,7 +70,8 @@ public class StringTokenizer {
 				tokens.add(previousToken);
 			} else if(Character.isWhitespace(data.charAt(i))) {
 			
-				// Do nothing
+				flushNumberBuffer();
+				flushFunctionBuffer();
 			}else
 				throw new Exception("Invalid input");
 		}
