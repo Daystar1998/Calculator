@@ -78,11 +78,15 @@ class StringTokenizerTests {
 
 		ArrayList<Token> tokens = stringTokenizer.tokenizeString(testString);
 
-		Assertions.assertEquals(1, tokens.size());
+		Assertions.assertEquals(2, tokens.size());
 
 		Token token = tokens.get(0);
+		Assertions.assertEquals(LexicalCategory.OPERATOR, token.getCategory());
+		Assertions.assertEquals("-", token.getValue());
+
+		token = tokens.get(1);
 		Assertions.assertEquals(LexicalCategory.NUMBER, token.getCategory());
-		Assertions.assertEquals(testString, token.getValue());
+		Assertions.assertEquals(testString.substring(1), token.getValue());
 	}
 
 	@Test
@@ -283,46 +287,6 @@ class StringTokenizerTests {
 	}
 
 	@Test
-	void testTokenizeStringFunctionNumberNoImpliedMultiplication() throws Exception {
-
-		String testString = "test1";
-
-		ArrayList<Token> tokens = stringTokenizer.tokenizeString(testString);
-
-		Assertions.assertEquals(2, tokens.size());
-
-		Token token = tokens.get(0);
-		Assertions.assertEquals(LexicalCategory.FUNCTION, token.getCategory());
-		Assertions.assertEquals("test", token.getValue());
-
-		token = tokens.get(1);
-		Assertions.assertEquals(LexicalCategory.NUMBER, token.getCategory());
-		Assertions.assertEquals("1", token.getValue());
-	}
-
-	@Test
-	void testTokenizeStringNumberFunctionImpliedMultiplication() throws Exception {
-
-		String testString = "1test";
-
-		ArrayList<Token> tokens = stringTokenizer.tokenizeString(testString);
-
-		Assertions.assertEquals(3, tokens.size());
-
-		Token token = tokens.get(0);
-		Assertions.assertEquals(LexicalCategory.NUMBER, token.getCategory());
-		Assertions.assertEquals("1", token.getValue());
-
-		token = tokens.get(1);
-		Assertions.assertEquals(LexicalCategory.OPERATOR, token.getCategory());
-		Assertions.assertEquals("*", token.getValue());
-
-		token = tokens.get(2);
-		Assertions.assertEquals(LexicalCategory.FUNCTION, token.getCategory());
-		Assertions.assertEquals("test", token.getValue());
-	}
-
-	@Test
 	void testTokenizeString1() throws Exception {
 
 		String testString = "func(5+ 6";
@@ -359,7 +323,7 @@ class StringTokenizerTests {
 
 		ArrayList<Token> tokens = stringTokenizer.tokenizeString(testString);
 
-		Assertions.assertEquals(6, tokens.size());
+		Assertions.assertEquals(5, tokens.size());
 
 		Token token = tokens.get(0);
 		Assertions.assertEquals(LexicalCategory.FUNCTION, token.getCategory());
@@ -374,14 +338,10 @@ class StringTokenizerTests {
 		Assertions.assertEquals("1", token.getValue());
 
 		token = tokens.get(3);
-		Assertions.assertEquals(LexicalCategory.OPERATOR, token.getCategory());
-		Assertions.assertEquals("*", token.getValue());
-
-		token = tokens.get(4);
 		Assertions.assertEquals(LexicalCategory.FUNCTION, token.getCategory());
 		Assertions.assertEquals("g", token.getValue());
 
-		token = tokens.get(5);
+		token = tokens.get(4);
 		Assertions.assertEquals(LexicalCategory.NUMBER, token.getCategory());
 		Assertions.assertEquals("2", token.getValue());
 	}
@@ -393,17 +353,13 @@ class StringTokenizerTests {
 
 		ArrayList<Token> tokens = stringTokenizer.tokenizeString(testString);
 
-		Assertions.assertEquals(3, tokens.size());
+		Assertions.assertEquals(2, tokens.size());
 
 		Token token = tokens.get(0);
 		Assertions.assertEquals(LexicalCategory.NUMBER, token.getCategory());
 		Assertions.assertEquals("1", token.getValue());
 
 		token = tokens.get(1);
-		Assertions.assertEquals(LexicalCategory.OPERATOR, token.getCategory());
-		Assertions.assertEquals("*", token.getValue());
-
-		token = tokens.get(2);
 		Assertions.assertEquals(LexicalCategory.NUMBER, token.getCategory());
 		Assertions.assertEquals("2", token.getValue());
 	}
