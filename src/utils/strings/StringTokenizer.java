@@ -53,13 +53,6 @@ public class StringTokenizer {
 				
 				previousToken = new Token(LexicalCategory.OPERATOR, Character.toString(data.charAt(i)));
 				tokens.add(previousToken);
-			} else if (data.charAt(i) == '(' || data.charAt(i) == ')') {
-				
-				flushNumberBuffer();
-				flushFunctionBuffer();
-
-				previousToken = new Token(LexicalCategory.PARENTHESIS, Character.toString(data.charAt(i)));
-				tokens.add(previousToken);
 			} else if(Character.isWhitespace(data.charAt(i))) {
 			
 				flushNumberBuffer();
@@ -80,6 +73,8 @@ public class StringTokenizer {
 		
 		switch(c) {
 			
+			case '(':
+			case ')':
 			case '^':
 			case '*':
 			case '×':

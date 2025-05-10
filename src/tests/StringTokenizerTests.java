@@ -19,7 +19,7 @@ import utils.strings.Token;
  */
 class StringTokenizerTests {
 
-	private Set<Character> operatorSet = new HashSet<Character>(Arrays.asList('^', '*', '×', '/', '÷', '%', '+', '-'));
+	private Set<Character> operatorSet = new HashSet<Character>(Arrays.asList('(', ')', '^', '*', '×', '/', '÷', '%', '+', '-'));
 	private StringTokenizer stringTokenizer = new StringTokenizer();
 
 	@Test
@@ -300,7 +300,7 @@ class StringTokenizerTests {
 		Assertions.assertEquals("func", token.getValue());
 
 		token = tokens.get(1);
-		Assertions.assertEquals(LexicalCategory.PARENTHESIS, token.getCategory());
+		Assertions.assertEquals(LexicalCategory.OPERATOR, token.getCategory());
 		Assertions.assertEquals("(", token.getValue());
 
 		token = tokens.get(2);
