@@ -212,7 +212,7 @@ class StringTokenizerTests {
 	@Test
 	void testTokenizeStringThrowsContainsInvalidCharacters() {
 
-		for (char c = 0; c <= Character.MAX_VALUE; c++) {
+		for (char c = 0; c < 256; c++) {
 
 			if (Character.isLetter(c) || Character.isDigit(c) || operatorSet.contains(c) || Character.isWhitespace(c)
 					|| c == '(' || c == ')' || c == '.')
@@ -230,10 +230,11 @@ class StringTokenizerTests {
 	@Test
 	void testTokenizeStringDoesNotThrowForValidCharacters() {
 
-		for (char c = 0; c <= Character.MAX_VALUE; c++) {
+		for (char c = 0; c <= 256; c++) {
 
+			// '.' is not considered valid unless part of a number
 			if (Character.isLetter(c) || Character.isDigit(c) || operatorSet.contains(c) || Character.isWhitespace(c)
-					|| c == '(' || c == ')' || c == '.') {
+					|| c == '(' || c == ')') {
 
 				String testString = Character.toString(c);
 
@@ -322,9 +323,73 @@ class StringTokenizerTests {
 	}
 
 	@Test
-	void testTokenizeString3() throws Exception {
+	void testTokenizeString1() throws Exception {
 
-		String testString = "6h";
+		String testString = "func(5+ 6";
+
+		ArrayList<Token> tokens = stringTokenizer.tokenizeString(testString);
+
+		Assertions.assertEquals(5, tokens.size());
+
+		Token token = tokens.get(0);
+		Assertions.assertEquals(LexicalCategory.FUNCTION, token.getCategory());
+		Assertions.assertEquals("func", token.getValue());
+
+		token = tokens.get(1);
+		Assertions.assertEquals(LexicalCategory.PARENTHESIS, token.getCategory());
+		Assertions.assertEquals("(", token.getValue());
+
+		token = tokens.get(2);
+		Assertions.assertEquals(LexicalCategory.NUMBER, token.getCategory());
+		Assertions.assertEquals("5", token.getValue());
+
+		token = tokens.get(3);
+		Assertions.assertEquals(LexicalCategory.OPERATOR, token.getCategory());
+		Assertions.assertEquals("+", token.getValue());
+
+		token = tokens.get(4);
+		Assertions.assertEquals(LexicalCategory.NUMBER, token.getCategory());
+		Assertions.assertEquals("6", token.getValue());
+	}
+
+	@Test
+	void testTokenizeString2() throws Exception {
+
+		String testString = "func * 1g2";
+
+		ArrayList<Token> tokens = stringTokenizer.tokenizeString(testString);
+
+		Assertions.assertEquals(6, tokens.size());
+
+		Token token = tokens.get(0);
+		Assertions.assertEquals(LexicalCategory.FUNCTION, token.getCategory());
+		Assertions.assertEquals("func", token.getValue());
+
+		token = tokens.get(1);
+		Assertions.assertEquals(LexicalCategory.OPERATOR, token.getCategory());
+		Assertions.assertEquals("*", token.getValue());
+
+		token = tokens.get(2);
+		Assertions.assertEquals(LexicalCategory.NUMBER, token.getCategory());
+		Assertions.assertEquals("1", token.getValue());
+
+		token = tokens.get(3);
+		Assertions.assertEquals(LexicalCategory.OPERATOR, token.getCategory());
+		Assertions.assertEquals("*", token.getValue());
+
+		token = tokens.get(4);
+		Assertions.assertEquals(LexicalCategory.FUNCTION, token.getCategory());
+		Assertions.assertEquals("g", token.getValue());
+
+		token = tokens.get(5);
+		Assertions.assertEquals(LexicalCategory.NUMBER, token.getCategory());
+		Assertions.assertEquals("2", token.getValue());
+	}
+
+	@Test
+	void testTokenizeString4() throws Exception {
+
+		String testString = "1 2";
 
 		ArrayList<Token> tokens = stringTokenizer.tokenizeString(testString);
 
@@ -332,15 +397,15 @@ class StringTokenizerTests {
 
 		Token token = tokens.get(0);
 		Assertions.assertEquals(LexicalCategory.NUMBER, token.getCategory());
-		Assertions.assertEquals("6", token.getValue());
+		Assertions.assertEquals("1", token.getValue());
 
 		token = tokens.get(1);
 		Assertions.assertEquals(LexicalCategory.OPERATOR, token.getCategory());
 		Assertions.assertEquals("*", token.getValue());
 
 		token = tokens.get(2);
-		Assertions.assertEquals(LexicalCategory.FUNCTION, token.getCategory());
-		Assertions.assertEquals("h", token.getValue());
+		Assertions.assertEquals(LexicalCategory.NUMBER, token.getCategory());
+		Assertions.assertEquals("2", token.getValue());
 	}
 
 	@Test
@@ -355,7 +420,7 @@ class StringTokenizerTests {
 	@Test
 	void testIsOperatorFalse() throws Exception {
 
-		for (char c = 0; c <= Character.MAX_VALUE; c++) {
+		for (char c = 0; c < 256; c++) {
 
 			if(!operatorSet.contains(c))
 				Assertions.assertFalse(stringTokenizer.isOperator(c));
