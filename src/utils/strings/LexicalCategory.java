@@ -6,7 +6,6 @@ package utils.strings;
 public enum LexicalCategory {
 
 	FUNCTION,
-	PARENTHESIS,
 	OPERATOR,
 	NUMBER;
 }
