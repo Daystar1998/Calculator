@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Deque;
 import java.util.Queue;
 
+import utils.strings.LexicalCategory;
 import utils.strings.StringTokenizer;
 import utils.strings.Token;
 
@@ -13,9 +14,12 @@ import utils.strings.Token;
  */
 public class MathStringParser {
 
-	private StringTokenizer tokenizer = new StringTokenizer();
 	private Queue<Token> postfixQueue = new ArrayDeque<Token>();
 	private Deque<Token> operatorStack = new ArrayDeque<Token>();
+	private Deque<Double> operandStack = new ArrayDeque<Double>();
+
+	private StringTokenizer tokenizer = new StringTokenizer();
+	private Token previousToken = null;
 
 	public double evaluateEquation(String equation) throws Exception {
 
@@ -43,6 +47,8 @@ public class MathStringParser {
 
 					processOperator(token);
 			}
+
+			previousToken = token;
 		}
 
 		while (!operatorStack.isEmpty()) {
@@ -55,8 +61,6 @@ public class MathStringParser {
 	}
 
 	private void processOperator(Token token) {
-		
-		// TODO Unary operators '-' and '%'
 
 		switch (token.getValue()) {
 
@@ -71,6 +75,10 @@ public class MathStringParser {
 					if (operatorStack.peek().getValue().equals("(")) {
 
 						operatorStack.pop();
+
+						if (!operatorStack.isEmpty() && operatorStack.peek().getCategory() == LexicalCategory.FUNCTION)
+							postfixQueue.add(operatorStack.pop());
+
 						break;
 					}
 
@@ -78,11 +86,29 @@ public class MathStringParser {
 				}
 
 				break;
+			case "%":
+
+				Token newToken = new Token(LexicalCategory.FUNCTION, "%");
+				operatorStack.push(newToken);
+				previousToken = newToken;
+				break;
+			case "-":
+
+				if (previousToken == null || (previousToken.getCategory() == LexicalCategory.OPERATOR
+						&& !previousToken.getValue().equals(")"))) {
+
+					operatorStack.push(new Token(LexicalCategory.FUNCTION, "-"));
+					break;
+				}
 			default:
 
 				while (!operatorStack.isEmpty() && !operatorStack.peek().getValue().equals("(")) {
 
-					if (OperatorPrecedence.comparePrecedence(operatorStack.peek().getValue(), token.getValue()) >= 0) {
+					if (operatorStack.peek().getCategory() == LexicalCategory.FUNCTION) {
+
+						postfixQueue.add(operatorStack.pop());
+					} else if (OperatorPrecedence.comparePrecedence(operatorStack.peek().getValue(),
+							token.getValue()) >= 0) {
 
 						postfixQueue.add(operatorStack.pop());
 					} else
@@ -96,8 +122,6 @@ public class MathStringParser {
 	private double calcResult() throws Exception {
 
 		double result = 0;
-
-		Deque<Double> operandStack = new ArrayDeque<Double>();
 
 		for (Token token : postfixQueue) {
 
@@ -143,8 +167,11 @@ public class MathStringParser {
 							operandStack.push(Math.pow(left, right));
 							break;
 					}
+
+					break;
 				case FUNCTION:
-					// TODO
+
+					evaluateFunction(token);
 					break;
 			}
 		}
@@ -155,5 +182,33 @@ public class MathStringParser {
 			throw new Exception("Invalid equation");
 
 		return result;
+	}
+
+	private void evaluateFunction(Token token) throws Exception {
+
+		switch (token.getValue()) {
+
+			case "-":
+
+				if (operandStack.size() < 1) {
+
+					throw new Exception("Invalid equation");
+				}
+
+				operandStack.push(-operandStack.pop());
+				break;
+			case "%":
+
+				if (operandStack.size() < 1) {
+
+					throw new Exception("Invalid equation");
+				}
+
+				operandStack.push(operandStack.pop() / 100);
+				break;
+			default:
+
+				throw new Exception("Invalid equation");
+		}
 	}
 }
