@@ -314,6 +314,46 @@ class MathStringParserTests {
 	}
 	
 	@Test
+	void testEvaluateEquationNegation1() throws Exception {
+		
+		String equation = "-10";
+
+		Assertions.assertEquals(-10, mathParser.evaluateEquation(equation));
+	}
+	
+	@Test
+	void testEvaluateEquationNegation2() throws Exception {
+		
+		String equation = "-0.5";
+
+		Assertions.assertEquals(-0.5, mathParser.evaluateEquation(equation));
+	}
+	
+	@Test
+	void testEvaluateEquationNegation4() throws Exception {
+		
+		String equation = "--80";
+
+		Assertions.assertEquals(80, mathParser.evaluateEquation(equation));
+	}
+	
+	@Test
+	void testEvaluateEquationNegation5() throws Exception {
+		
+		String equation = ")-40";
+
+		Assertions.assertEquals(-40, mathParser.evaluateEquation(equation));
+	}
+	
+	@Test
+	void testEvaluateEquationNegation6() throws Exception {
+		
+		String equation = "4)-40";
+
+		Assertions.assertEquals(-36, mathParser.evaluateEquation(equation));
+	}
+	
+	@Test
 	void testEvaluateEquationParentheses1() throws Exception {
 		
 		String equation = "(6";
@@ -431,5 +471,238 @@ class MathStringParserTests {
 		String equation = "4 × 8 ÷ 2";
 
 		Assertions.assertEquals(16, mathParser.evaluateEquation(equation));
+	}
+	
+	@Test
+	void testEvaluateEquationThrowsDivideByZero() throws Exception {
+		
+		String equation = "1 / 0";
+
+		Exception e = Assertions.assertThrows(Exception.class, () -> mathParser.evaluateEquation(equation));
+		
+		Assertions.assertEquals("Divide by zero", e.getMessage());
+	}
+	
+	@Test
+	void testEvaluateEquationThrowsDivideByZeroAlt() throws Exception {
+		
+		String equation = "1 ÷ 0";
+
+		Exception e = Assertions.assertThrows(Exception.class, () -> mathParser.evaluateEquation(equation));
+		
+		Assertions.assertEquals("Divide by zero", e.getMessage());
+	}
+	
+	@Test
+	void testEvaluateEquationThrowsInvalidEquationTooManyOperators1() throws Exception {
+		
+		String equation = "6 +* 5";
+
+		Exception e = Assertions.assertThrows(Exception.class, () -> mathParser.evaluateEquation(equation));
+		
+		Assertions.assertEquals("Invalid equation", e.getMessage());
+	}
+	
+	@Test
+	void testEvaluateEquationThrowsInvalidEquationTooManyOperators2() throws Exception {
+		
+		String equation = "/6 + 5";
+
+		Exception e = Assertions.assertThrows(Exception.class, () -> mathParser.evaluateEquation(equation));
+		
+		Assertions.assertEquals("Invalid equation", e.getMessage());
+	}
+	
+	@Test
+	void testEvaluateEquationThrowsInvalidEquationTooManyOperators3() throws Exception {
+		
+		String equation = "6 * 5^";
+
+		Exception e = Assertions.assertThrows(Exception.class, () -> mathParser.evaluateEquation(equation));
+		
+		Assertions.assertEquals("Invalid equation", e.getMessage());
+	}
+	
+	@Test
+	void testEvaluateEquationThrowsInvalidEquationTooManyNumbers1() throws Exception {
+		
+		String equation = "6 * 5 5";
+
+		Exception e = Assertions.assertThrows(Exception.class, () -> mathParser.evaluateEquation(equation));
+		
+		Assertions.assertEquals("Invalid equation", e.getMessage());
+	}
+	
+	@Test
+	void testEvaluateEquationThrowsInvalidEquationTooManyNumbers2() throws Exception {
+		
+		String equation = "4 6 * 5";
+
+		Exception e = Assertions.assertThrows(Exception.class, () -> mathParser.evaluateEquation(equation));
+		
+		Assertions.assertEquals("Invalid equation", e.getMessage());
+	}
+	
+	@Test
+	void testEvaluateEquationThrowsInvalidEquationTooManyNumbers3() throws Exception {
+		
+		String equation = "6 5";
+
+		Exception e = Assertions.assertThrows(Exception.class, () -> mathParser.evaluateEquation(equation));
+		
+		Assertions.assertEquals("Invalid equation", e.getMessage());
+	}
+	
+	@Test
+	void testEvaluateEquationThrowsInvalidEquationParenthesesOnly1() throws Exception {
+		
+		String equation = "()";
+
+		Exception e = Assertions.assertThrows(Exception.class, () -> mathParser.evaluateEquation(equation));
+		
+		Assertions.assertEquals("Invalid equation", e.getMessage());
+	}
+	
+	@Test
+	void testEvaluateEquationThrowsInvalidEquationParenthesesOnly2() throws Exception {
+		
+		String equation = "(";
+
+		Exception e = Assertions.assertThrows(Exception.class, () -> mathParser.evaluateEquation(equation));
+		
+		Assertions.assertEquals("Invalid equation", e.getMessage());
+	}
+	
+	@Test
+	void testEvaluateEquationThrowsInvalidEquationParenthesesOnly3() throws Exception {
+		
+		String equation = ")";
+
+		Exception e = Assertions.assertThrows(Exception.class, () -> mathParser.evaluateEquation(equation));
+		
+		Assertions.assertEquals("Invalid equation", e.getMessage());
+	}
+	
+	@Test
+	void testEvaluateEquationDoesNotThrowExtraParenthesis1() throws Exception {
+		
+		String equation = "5(";
+
+		Assertions.assertDoesNotThrow(() -> mathParser.evaluateEquation(equation));
+	}
+	
+	@Test
+	void testEvaluateEquationDoesNotThrowExtraParenthesis2() throws Exception {
+		
+		String equation = ")5";
+
+		Assertions.assertDoesNotThrow(() -> mathParser.evaluateEquation(equation));
+	}
+	
+	@Test
+	void testEvaluateEquationDoesNotThrowExtraParenthesis3() throws Exception {
+		
+		String equation = ")5(";
+
+		Assertions.assertDoesNotThrow(() -> mathParser.evaluateEquation(equation));
+	}
+	
+	@Test
+	void testEvaluateEquationDoesNotThrowExtraParenthesis4() throws Exception {
+		
+		String equation = "5*(4)))))";
+
+		Assertions.assertDoesNotThrow(() -> mathParser.evaluateEquation(equation));
+	}
+	
+	@Test
+	void testEvaluateEquationDoesNotThrowExtraParenthesis5() throws Exception {
+		
+		String equation = "(((((5*(4)";
+
+		Assertions.assertDoesNotThrow(() -> mathParser.evaluateEquation(equation));
+	}
+	
+	@Test
+	void testEvaluateEquationThrowsInvalidEquationUnknownFunction1() throws Exception {
+		
+		String equation = "foo";
+
+		Exception e = Assertions.assertThrows(Exception.class, () -> mathParser.evaluateEquation(equation));
+		
+		Assertions.assertEquals("Unknown function: foo", e.getMessage());
+	}
+	
+	@Test
+	void testEvaluateEquationThrowsInvalidEquationUnknownFunction2() throws Exception {
+		
+		String equation = "bar5";
+
+		Exception e = Assertions.assertThrows(Exception.class, () -> mathParser.evaluateEquation(equation));
+		
+		Assertions.assertEquals("Unknown function: bar", e.getMessage());
+	}
+	
+	@Test
+	void testEvaluateEquationThrowsInvalidEquationUnknownFunction3() throws Exception {
+		
+		String equation = "5foo";
+
+		Exception e = Assertions.assertThrows(Exception.class, () -> mathParser.evaluateEquation(equation));
+		
+		Assertions.assertEquals("Unknown function: foo", e.getMessage());
+	}
+	
+	@Test
+	void testEvaluateEquationThrowsInvalidEquationNegativeWithoutNumber() throws Exception {
+		
+		String equation = "-";
+
+		Exception e = Assertions.assertThrows(Exception.class, () -> mathParser.evaluateEquation(equation));
+		
+		Assertions.assertEquals("Invalid equation", e.getMessage());
+	}
+	
+	@Test
+	void testEvaluateEquationThrowsInvalidEquationPercentageWithoutNumber() throws Exception {
+		
+		String equation = "%";
+
+		Exception e = Assertions.assertThrows(Exception.class, () -> mathParser.evaluateEquation(equation));
+		
+		Assertions.assertEquals("Invalid equation", e.getMessage());
+	}
+	
+	@Test
+	void testEvaluateEquationResetsAfterThrow1() throws Exception {
+		
+		String equation1 = "6 /* 5";
+		String equation2 = "3 - 4";
+
+		Assertions.assertThrows(Exception.class, () -> mathParser.evaluateEquation(equation1));
+		
+		Assertions.assertEquals(-1, mathParser.evaluateEquation(equation2));
+	}
+	
+	@Test
+	void testEvaluateEquationResetsAfterThrow2() throws Exception {
+		
+		String equation1 = "6 5";
+		String equation2 = "3 * 4";
+
+		Assertions.assertThrows(Exception.class, () -> mathParser.evaluateEquation(equation1));
+		
+		Assertions.assertEquals(12, mathParser.evaluateEquation(equation2));
+	}
+	
+	@Test
+	void testEvaluateEquationResetsAfterThrow3() throws Exception {
+		
+		String equation1 = "(6)^";
+		String equation2 = "3 / 4";
+
+		Assertions.assertThrows(Exception.class, () -> mathParser.evaluateEquation(equation1));
+		
+		Assertions.assertEquals(0.75, mathParser.evaluateEquation(equation2));
 	}
 }
