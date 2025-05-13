@@ -382,4 +382,33 @@ class StringTokenizerTests {
 				Assertions.assertFalse(stringTokenizer.isOperator(c));
 		}
 	}
+
+	@Test
+	void testTokenizeStringResetsAfterThrow() throws Exception {
+		
+		String testString1 = ".5.";
+		String testString2 = "5/4";
+
+		Exception exception = Assertions.assertThrows(Exception.class,
+				() -> stringTokenizer.tokenizeString(testString1));
+
+		Assertions.assertEquals("Number cannot contain multiple decimal points", exception.getMessage());
+
+
+		ArrayList<Token> tokens = stringTokenizer.tokenizeString(testString2);
+
+		Assertions.assertEquals(3, tokens.size());
+
+		Token token = tokens.get(0);
+		Assertions.assertEquals(LexicalCategory.NUMBER, token.getCategory());
+		Assertions.assertEquals("5", token.getValue());
+
+		token = tokens.get(1);
+		Assertions.assertEquals(LexicalCategory.OPERATOR, token.getCategory());
+		Assertions.assertEquals("/", token.getValue());
+
+		token = tokens.get(2);
+		Assertions.assertEquals(LexicalCategory.NUMBER, token.getCategory());
+		Assertions.assertEquals("4", token.getValue());
+	}
 }
