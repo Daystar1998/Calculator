@@ -5,6 +5,8 @@ import java.awt.EventQueue;
 import java.awt.GridBagLayout;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -94,6 +96,33 @@ public class Window {
 		displayTextField = new JTextField();
 		displayTextField.setHorizontalAlignment(SwingConstants.RIGHT);
 		displayPanel.add(displayTextField, new GBConstraints(0, 0).fill(Fill.BOTH));
+
+		displayTextField.addCaretListener((e) -> {
+
+			try {
+
+				double result = mathParser.evaluateEquation(displayTextField.getText());
+
+				DecimalFormat decimalFormat = new DecimalFormat("0");
+				decimalFormat.setMaximumFractionDigits(340); // Maximum allowed
+				String resultString = decimalFormat.format(result);
+
+				Pattern pattern = Pattern.compile("^-?[0-9]*\\.?[0-9]*$");
+				Matcher matcher = pattern.matcher(displayTextField.getText().trim());
+
+				if (!matcher.find()) {
+
+					infoTextField.setForeground(null);
+					infoTextField.setText(resultString);
+				} else {
+
+					infoTextField.setText("");
+				}
+			} catch (Exception exception) {
+
+				infoTextField.setText("");
+			}
+		});
 
 		infoTextField = new JTextField();
 		infoTextField.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -227,7 +256,7 @@ public class Window {
 		buttonEqual.setToolTipText("Result");
 		buttonEqual.addActionListener(e -> {
 
-			solveEquation(displayTextField.getText());
+			solveAndDisplay(displayTextField.getText());
 		});
 		basicInputPanel.add(buttonEqual, new GBConstraints(3, 3).size(1, 2).fill(Fill.BOTH));
 
@@ -296,14 +325,14 @@ public class Window {
 		buttonChangeSign.setToolTipText("Change sign");
 		buttonChangeSign.addActionListener(e -> {
 
-			solveEquation("-(" + displayTextField.getText() + ")");
+			solveAndDisplay("-(" + displayTextField.getText() + ")");
 		});
 		specialInputPanel.add(buttonChangeSign, new GBConstraints(0, 5).fill(Fill.BOTH));
 
 		return specialInputPanel;
 	}
 
-	private void solveEquation(String equation) {
+	private void solveAndDisplay(String equation) {
 
 		String trimmedEquation = equation.trim();
 
@@ -328,7 +357,6 @@ public class Window {
 			infoTextField.setText("");
 		} catch (Exception e) {
 
-			displayTextField.setText(trimmedEquation);
 			infoTextField.setForeground(Color.RED);
 			infoTextField.setText(e.getMessage());
 		}
