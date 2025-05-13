@@ -23,6 +23,10 @@ public class MathStringParser {
 
 	public double evaluateEquation(String equation) throws Exception {
 
+		postfixQueue.clear();
+		operatorStack.clear();
+		operandStack.clear();
+
 		ArrayList<Token> tokens = tokenizer.tokenizeString(equation);
 		convertInfixToPostfix(tokens);
 
@@ -95,8 +99,9 @@ public class MathStringParser {
 			case "-":
 
 				if (previousToken == null || (previousToken.getCategory() == LexicalCategory.OPERATOR
-						&& !previousToken.getValue().equals(")"))) {
+						&& (!previousToken.getValue().equals(")") || postfixQueue.isEmpty()))) {
 
+					// Don't change the previousToken to allow for double negation eg. "--5"
 					operatorStack.push(new Token(LexicalCategory.FUNCTION, "-"));
 					break;
 				}
@@ -160,7 +165,11 @@ public class MathStringParser {
 						case "÷":
 						case "/":
 
+							if (Math.abs(right) < 0.0000000001)
+								throw new Exception("Divide by zero");
+
 							operandStack.push(left / right);
+
 							break;
 						case "^":
 
@@ -208,7 +217,7 @@ public class MathStringParser {
 				break;
 			default:
 
-				throw new Exception("Invalid equation");
+				throw new Exception("Unknown function: " + token.getValue());
 		}
 	}
 }
