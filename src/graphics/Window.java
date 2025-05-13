@@ -1,7 +1,10 @@
 package graphics;
 
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.GridBagLayout;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -11,15 +14,19 @@ import javax.swing.SwingConstants;
 
 import utils.gbl.Fill;
 import utils.gbl.GBConstraints;
+import utils.math.MathStringParser;
 
 /*
  * Main window class. UI layout mimics KDE's KCalc program
  */
 public class Window {
 
+	private ArrayList<String> history;
+	private MathStringParser mathParser;
+
 	private JFrame frame;
-	private JTextField inputTextField;
-	private JTextField resultTextField;
+	private JTextField displayTextField;
+	private JTextField infoTextField;
 	private JPanel inputPanel;
 
 	/**
@@ -56,9 +63,13 @@ public class Window {
 	 */
 	private void initialize() {
 
-		frame = new JFrame();
+		history = new ArrayList<String>();
+		mathParser = new MathStringParser();
+
+		frame = new JFrame("Calculator");
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setLocationRelativeTo(null);
 
 		JPanel basePanel = createBasePanel();
 		frame.setContentPane(basePanel);
@@ -80,14 +91,14 @@ public class Window {
 		JPanel displayPanel = new JPanel(new GridBagLayout());
 		basePanel.add(displayPanel, new GBConstraints(0, 0).size(6, 2).fill(Fill.BOTH));
 
-		inputTextField = new JTextField();
-		inputTextField.setHorizontalAlignment(SwingConstants.RIGHT);
-		displayPanel.add(inputTextField, new GBConstraints(0, 0).fill(Fill.BOTH));
+		displayTextField = new JTextField();
+		displayTextField.setHorizontalAlignment(SwingConstants.RIGHT);
+		displayPanel.add(displayTextField, new GBConstraints(0, 0).fill(Fill.BOTH));
 
-		resultTextField = new JTextField();
-		resultTextField.setHorizontalAlignment(SwingConstants.RIGHT);
-		resultTextField.setEditable(false);
-		displayPanel.add(resultTextField, new GBConstraints(0, 1).fill(Fill.BOTH));
+		infoTextField = new JTextField();
+		infoTextField.setHorizontalAlignment(SwingConstants.RIGHT);
+		infoTextField.setEditable(false);
+		displayPanel.add(infoTextField, new GBConstraints(0, 1).fill(Fill.BOTH));
 
 		// Input panel
 
@@ -107,7 +118,7 @@ public class Window {
 		buttonPercent.setToolTipText("Percent");
 		buttonPercent.addActionListener(e -> {
 
-			inputTextField.setText(inputTextField.getText() + "%");
+			displayTextField.setText(displayTextField.getText() + "%");
 		});
 		basicInputPanel.add(buttonPercent, new GBConstraints(0, 0).fill(Fill.BOTH));
 
@@ -115,7 +126,7 @@ public class Window {
 		buttonDivision.setToolTipText("Division");
 		buttonDivision.addActionListener(e -> {
 
-			inputTextField.setText(inputTextField.getText() + "÷");
+			displayTextField.setText(displayTextField.getText() + "÷");
 		});
 		basicInputPanel.add(buttonDivision, new GBConstraints(1, 0).fill(Fill.BOTH));
 
@@ -123,7 +134,7 @@ public class Window {
 		buttonMultiplication.setToolTipText("Multiplication");
 		buttonMultiplication.addActionListener(e -> {
 
-			inputTextField.setText(inputTextField.getText() + "×");
+			displayTextField.setText(displayTextField.getText() + "×");
 		});
 		basicInputPanel.add(buttonMultiplication, new GBConstraints(2, 0).fill(Fill.BOTH));
 
@@ -131,7 +142,7 @@ public class Window {
 		buttonSubtraction.setToolTipText("Minus");
 		buttonSubtraction.addActionListener(e -> {
 
-			inputTextField.setText(inputTextField.getText() + "-");
+			displayTextField.setText(displayTextField.getText() + "-");
 		});
 		basicInputPanel.add(buttonSubtraction, new GBConstraints(3, 0).fill(Fill.BOTH));
 
@@ -140,21 +151,21 @@ public class Window {
 		JButton buttonSeven = new JButton("7");
 		buttonSeven.addActionListener(e -> {
 
-			inputTextField.setText(inputTextField.getText() + "7");
+			displayTextField.setText(displayTextField.getText() + "7");
 		});
 		basicInputPanel.add(buttonSeven, new GBConstraints(0, 1).fill(Fill.BOTH));
 
 		JButton buttonEight = new JButton("8");
 		buttonEight.addActionListener(e -> {
 
-			inputTextField.setText(inputTextField.getText() + "8");
+			displayTextField.setText(displayTextField.getText() + "8");
 		});
 		basicInputPanel.add(buttonEight, new GBConstraints(1, 1).fill(Fill.BOTH));
 
 		JButton buttonNine = new JButton("9");
 		buttonNine.addActionListener(e -> {
 
-			inputTextField.setText(inputTextField.getText() + "9");
+			displayTextField.setText(displayTextField.getText() + "9");
 		});
 		basicInputPanel.add(buttonNine, new GBConstraints(2, 1).fill(Fill.BOTH));
 
@@ -162,7 +173,7 @@ public class Window {
 		buttonAddition.setToolTipText("Plus");
 		buttonAddition.addActionListener(e -> {
 
-			inputTextField.setText(inputTextField.getText() + "+");
+			displayTextField.setText(displayTextField.getText() + "+");
 		});
 		basicInputPanel.add(buttonAddition, new GBConstraints(3, 1).size(1, 2).fill(Fill.BOTH));
 
@@ -171,21 +182,21 @@ public class Window {
 		JButton buttonFour = new JButton("4");
 		buttonFour.addActionListener(e -> {
 
-			inputTextField.setText(inputTextField.getText() + "4");
+			displayTextField.setText(displayTextField.getText() + "4");
 		});
 		basicInputPanel.add(buttonFour, new GBConstraints(0, 2).fill(Fill.BOTH));
 
 		JButton buttonFive = new JButton("5");
 		buttonFive.addActionListener(e -> {
 
-			inputTextField.setText(inputTextField.getText() + "5");
+			displayTextField.setText(displayTextField.getText() + "5");
 		});
 		basicInputPanel.add(buttonFive, new GBConstraints(1, 2).fill(Fill.BOTH));
 
 		JButton buttonSix = new JButton("6");
 		buttonSix.addActionListener(e -> {
 
-			inputTextField.setText(inputTextField.getText() + "6");
+			displayTextField.setText(displayTextField.getText() + "6");
 		});
 		basicInputPanel.add(buttonSix, new GBConstraints(2, 2).fill(Fill.BOTH));
 
@@ -194,21 +205,21 @@ public class Window {
 		JButton buttonOne = new JButton("1");
 		buttonOne.addActionListener(e -> {
 
-			inputTextField.setText(inputTextField.getText() + "1");
+			displayTextField.setText(displayTextField.getText() + "1");
 		});
 		basicInputPanel.add(buttonOne, new GBConstraints(0, 3).fill(Fill.BOTH));
 
 		JButton buttonTwo = new JButton("2");
 		buttonTwo.addActionListener(e -> {
 
-			inputTextField.setText(inputTextField.getText() + "2");
+			displayTextField.setText(displayTextField.getText() + "2");
 		});
 		basicInputPanel.add(buttonTwo, new GBConstraints(1, 3).fill(Fill.BOTH));
 
 		JButton buttonThree = new JButton("3");
 		buttonThree.addActionListener(e -> {
 
-			inputTextField.setText(inputTextField.getText() + "3");
+			displayTextField.setText(displayTextField.getText() + "3");
 		});
 		basicInputPanel.add(buttonThree, new GBConstraints(2, 3).fill(Fill.BOTH));
 
@@ -216,8 +227,7 @@ public class Window {
 		buttonEqual.setToolTipText("Result");
 		buttonEqual.addActionListener(e -> {
 
-			// TODO Solve equation and display result
-			// Add equation and result to history
+			solveEquation(displayTextField.getText());
 		});
 		basicInputPanel.add(buttonEqual, new GBConstraints(3, 3).size(1, 2).fill(Fill.BOTH));
 
@@ -226,7 +236,7 @@ public class Window {
 		JButton buttonZero = new JButton("0");
 		buttonZero.addActionListener(e -> {
 
-			inputTextField.setText(inputTextField.getText() + "0");
+			displayTextField.setText(displayTextField.getText() + "0");
 		});
 		basicInputPanel.add(buttonZero, new GBConstraints(0, 4).size(2, 1).fill(Fill.BOTH));
 
@@ -234,7 +244,7 @@ public class Window {
 		buttonDecimal.setToolTipText("Decimal point");
 		buttonDecimal.addActionListener(e -> {
 
-			inputTextField.setText(inputTextField.getText() + ".");
+			displayTextField.setText(displayTextField.getText() + ".");
 		});
 		basicInputPanel.add(buttonDecimal, new GBConstraints(2, 4).fill(Fill.BOTH));
 
@@ -251,7 +261,8 @@ public class Window {
 		buttonClear.setToolTipText("Clear");
 		buttonClear.addActionListener(e -> {
 
-			inputTextField.setText("");
+			displayTextField.setText("");
+			infoTextField.setText("");
 		});
 		specialInputPanel.add(buttonClear, new GBConstraints(0, 1).fill(Fill.BOTH));
 
@@ -259,8 +270,9 @@ public class Window {
 		buttonClearAll.setToolTipText("Clear all");
 		buttonClearAll.addActionListener(e -> {
 
-			inputTextField.setText("");
-			// TODO Clear history
+			displayTextField.setText("");
+			infoTextField.setText("");
+			history.clear();
 		});
 		specialInputPanel.add(buttonClearAll, new GBConstraints(0, 2).fill(Fill.BOTH));
 
@@ -268,7 +280,7 @@ public class Window {
 		buttonOpeningParenthesis.setToolTipText("Open Parenthesis");
 		buttonOpeningParenthesis.addActionListener(e -> {
 
-			inputTextField.setText(inputTextField.getText() + "(");
+			displayTextField.setText(displayTextField.getText() + "(");
 		});
 		specialInputPanel.add(buttonOpeningParenthesis, new GBConstraints(0, 3).fill(Fill.BOTH));
 
@@ -276,19 +288,49 @@ public class Window {
 		buttonClosingParenthesis.setToolTipText("Close Parenthesis");
 		buttonClosingParenthesis.addActionListener(e -> {
 
-			inputTextField.setText(inputTextField.getText() + ")");
+			displayTextField.setText(displayTextField.getText() + ")");
 		});
 		specialInputPanel.add(buttonClosingParenthesis, new GBConstraints(0, 4).fill(Fill.BOTH));
 
 		JButton buttonChangeSign = new JButton("+/-");
 		buttonChangeSign.setToolTipText("Change sign");
-		buttonClosingParenthesis.addActionListener(e -> {
+		buttonChangeSign.addActionListener(e -> {
 
-			// TODO Solve for negative of equation result
-			// Add equation and result to history
+			solveEquation("-(" + displayTextField.getText() + ")");
 		});
 		specialInputPanel.add(buttonChangeSign, new GBConstraints(0, 5).fill(Fill.BOTH));
 
 		return specialInputPanel;
+	}
+
+	private void solveEquation(String equation) {
+
+		String trimmedEquation = equation.trim();
+
+		if (trimmedEquation.isEmpty()) {
+
+			infoTextField.setText("");
+			return;
+		}
+
+		try {
+
+			double result = mathParser.evaluateEquation(trimmedEquation);
+
+			DecimalFormat decimalFormat = new DecimalFormat("0");
+			decimalFormat.setMaximumFractionDigits(340); // Maximum allowed
+			String resultString = decimalFormat.format(result);
+
+			history.add(trimmedEquation + "=" + resultString);
+
+			displayTextField.setText(resultString);
+			infoTextField.setForeground(null);
+			infoTextField.setText("");
+		} catch (Exception e) {
+
+			displayTextField.setText(trimmedEquation);
+			infoTextField.setForeground(Color.RED);
+			infoTextField.setText(e.getMessage());
+		}
 	}
 }
