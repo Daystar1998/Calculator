@@ -4,15 +4,21 @@ import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.GridBagLayout;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.JTextPane;
 import javax.swing.SwingConstants;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
 
 import utils.gbl.Fill;
 import utils.gbl.GBConstraints;
@@ -23,13 +29,13 @@ import utils.math.MathStringParser;
  */
 public class Window {
 
-	private ArrayList<String> history;
 	private MathStringParser mathParser;
 
 	private JFrame frame;
 	private JTextField displayTextField;
 	private JTextField infoTextField;
 	private JPanel inputPanel;
+	private JTextPane historyTextPane;
 
 	/**
 	 * Launch the application.
@@ -65,15 +71,25 @@ public class Window {
 	 */
 	private void initialize() {
 
-		history = new ArrayList<String>();
 		mathParser = new MathStringParser();
 
 		frame = new JFrame("Calculator");
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLocationRelativeTo(null);
+		
+		JMenuBar menuBar = new JMenuBar();
+		JMenu settingsMenu = new JMenu("Settings");
+		menuBar.add(settingsMenu);
+		
+		JCheckBoxMenuItem showHistory = new JCheckBoxMenuItem("Show History");
+		settingsMenu.add(showHistory);
+		
+		frame.setJMenuBar(menuBar);
 
 		JPanel basePanel = createBasePanel();
+		inputPanel = new JPanel(new GridBagLayout());
+		basePanel.add(inputPanel, new GBConstraints(0, 2).size(1, 5).fill(Fill.BOTH));
 		frame.setContentPane(basePanel);
 
 		JPanel basicInputPanel = createBasicInputPanel();
@@ -81,6 +97,26 @@ public class Window {
 
 		JPanel specialInputPanel = createSpecialInputPanel();
 		inputPanel.add(specialInputPanel, new GBConstraints(1, 0).fill(Fill.BOTH));
+		
+		JPanel historyPanel = new JPanel();
+		historyPanel.setLayout(new GridBagLayout());
+
+		historyTextPane = new JTextPane();
+		historyTextPane.setEditable(false);
+		SimpleAttributeSet attributeSet = new SimpleAttributeSet(historyTextPane.getParagraphAttributes());  
+		StyleConstants.setAlignment(attributeSet, StyleConstants.ALIGN_RIGHT);
+		historyTextPane.setParagraphAttributes(attributeSet, true);
+		
+		JScrollPane historyScrollPane = new JScrollPane(historyTextPane);
+		historyScrollPane.setVisible(false);
+		frame.add(historyScrollPane, new GBConstraints(7, 0).size(2, 7).fill(Fill.BOTH));
+		
+		showHistory.addActionListener(e -> {
+			
+			historyScrollPane.setVisible(showHistory.isSelected());
+			frame.getContentPane().validate();
+			frame.getContentPane().repaint();
+		});
 	}
 
 	private JPanel createBasePanel() {
@@ -128,11 +164,6 @@ public class Window {
 		infoTextField.setHorizontalAlignment(SwingConstants.RIGHT);
 		infoTextField.setEditable(false);
 		displayPanel.add(infoTextField, new GBConstraints(0, 1).fill(Fill.BOTH));
-
-		// Input panel
-
-		inputPanel = new JPanel(new GridBagLayout());
-		basePanel.add(inputPanel, new GBConstraints(0, 2).size(1, 5).fill(Fill.BOTH));
 
 		return basePanel;
 	}
@@ -301,7 +332,7 @@ public class Window {
 
 			displayTextField.setText("");
 			infoTextField.setText("");
-			history.clear();
+			historyTextPane.setText("");
 		});
 		specialInputPanel.add(buttonClearAll, new GBConstraints(0, 2).fill(Fill.BOTH));
 
@@ -350,8 +381,14 @@ public class Window {
 			decimalFormat.setMaximumFractionDigits(340); // Maximum allowed
 			String resultString = decimalFormat.format(result);
 
-			history.add(trimmedEquation + "=" + resultString);
-
+			if(historyTextPane.getText().isEmpty()) {
+				
+				historyTextPane.setText(trimmedEquation + "=" + resultString);
+			} else {
+			
+				historyTextPane.setText(trimmedEquation + "=" + resultString + "\n" + historyTextPane.getText());
+			}
+			
 			displayTextField.setText(resultString);
 			infoTextField.setForeground(null);
 			infoTextField.setText("");
