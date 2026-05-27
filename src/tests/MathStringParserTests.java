@@ -474,6 +474,14 @@ class MathStringParserTests {
 	}
 	
 	@Test
+	void testEvaluateEquationPercentageFollowedByMinus() throws Exception {
+		
+		String equation = "50%-7";
+
+		Assertions.assertEquals(-6.5, mathParser.evaluateEquation(equation));
+	}
+	
+	@Test
 	void testEvaluateEquationThrowsDivideByZero() throws Exception {
 		
 		String equation = "1 / 0";
